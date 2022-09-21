@@ -18,21 +18,33 @@ typedef struct Produit{
     int quantite;
     float prix;
     float prixTTC;
-    float somPrixTotal;
-    date d;
+    //float somPrixTotal;
+    
     
 
 }Produit;
 
-int sizeV=0;
+typedef struct ProdVendus{
+	 int code;
+    char nom[30];
+    int quantite;
+    float prixTTC;
+    
+    float prixTotal;
+    date d;
+
+	
+}ProdVendus;
+
+
 Produit produit[Max];
 date d;
 int np=0;
 //float somPrixTotal =0;
 int somQuantite =0;
 
-Produit prodVendus[Max];
-
+ProdVendus prodVendus[Max];
+int sizeV=0;
 //fonctions
 void ajouterproduit(){
 	printf("\n *************************************\n");
@@ -186,7 +198,6 @@ void alimenterStock(){
  void acheterProduit(){
 
     int i, code, quantite,count=0;
-    float produittotal;
     
     time_t tt = time(NULL);
   	struct tm* dt = localtime(&tt);
@@ -205,19 +216,19 @@ void alimenterStock(){
             if (produit[i].quantite >= quantite)
             {
                 produit[i].quantite -= quantite;
-                printf("le nom de medicament %s  | PrixTTC x quantite = %.2f  | ",produit[i].nom,produit[i].prixTTC*quantite);
-				printf(" %.2d/%.2d/%.2d\n",dt->tm_mday,dt->tm_mon+1,dt->tm_year+1900);
+//                printf("le nom de medicament %s  | PrixTTC x quantite = %.2f  | ",produit[i].nom,produit[i].prixTTC*quantite);
+//				printf(" %.2d/%.2d/%.2d\n",dt->tm_mday,dt->tm_mon+1,dt->tm_year+1900);
 			
-			produittotal = quantite*produit[i].prixTTC;
+			//produittotal = quantite*produit[i].prixTTC;
 		
 			
 			
-			prodVendus[sizeV] = produit[i];
-//			prodVendus[sizeV].code=produit[i].code;
-//			prodVendus[sizeV].prixTTC += produit[i].prixTTC;
-//			strcpy(prodVendus[sizeV].nom,produit[i].nom);
-//			prodVendus[sizeV].quantite=quantite;
-			prodVendus[sizeV].somPrixTotal += produittotal;
+		//	prodVendus[sizeV] = produit[i];
+			prodVendus[sizeV].code=produit[i].code;
+        	prodVendus[sizeV].prixTTC = produit[i].prixTTC;
+	    	strcpy(prodVendus[sizeV].nom,produit[i].nom);
+	     	prodVendus[sizeV].quantite=quantite;
+			prodVendus[sizeV].prixTotal = quantite * produit[i].prixTTC;
 			
 			prodVendus[sizeV].d.day =dt->tm_mday ;
 			prodVendus[sizeV].d.month =dt->tm_mon+1 ;
@@ -225,7 +236,7 @@ void alimenterStock(){
 			
 			
 			sizeV++;
-			somQuantite += quantite;
+		//	somQuantite += quantite;
             }
             else
             {
@@ -245,34 +256,32 @@ void alimenterStock(){
   	time_t tt = time(NULL);
   	struct tm* dt = localtime(&tt);
   	int jour = dt->tm_mday;
-  	int mois = dt->tm_mon;
-  	int annee = dt->tm_year;
+  	int mois = dt->tm_mon+1;
+  	int annee = dt->tm_year+1900;
 	float prixT = 0 , moyenne = 0 ;
-	
-	int i =0;
-   	float max =prodVendus[0].prixTTC , min = prodVendus[0].prixTTC;
+	int Totalquantite=0;
+	int i;
+   	float max =prodVendus[0].prixTotal , min = prodVendus[0].prixTotal;
 
     for(i=0;i<sizeV ;i++)
     {
         if(prodVendus[i].d.day==jour&&prodVendus[i].d.month==mois&&prodVendus[i].d.year==annee)
         {
-            prixT += prodVendus[i].somPrixTotal ; 
+            prixT += prodVendus[i].prixTotal ; 
+            Totalquantite+=prodVendus[i].quantite;
+            if(prodVendus[i].prixTotal > max){
+            	max = prodVendus[i].prixTotal;
+			}
+                
+            if(prodVendus[i].prixTotal < min ){
+            	min = prodVendus[i].prixTotal;
+			}
+                
         }
+        
     }
 
-            moyenne = prixT/somQuantite ;
-
-            for(i=0;i<sizeV;i++)
-            {
-                if(prodVendus[i].prixTTC > max)
-                max = prodVendus[i].prixTTC;
-            }
-
-            for(i=0;i<sizeV;i++)
-            {
-                if(prodVendus[i].prixTTC < min )
-                min = prodVendus[i].prixTTC;
-            }
+            moyenne = prixT/(float)Totalquantite ;
 
 
             printf("Afficher le total des prix des produits vendus en journee courante est = %.2f\n",prixT);
