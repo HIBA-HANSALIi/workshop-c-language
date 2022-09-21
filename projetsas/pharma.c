@@ -1,17 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<stdbool.h>
 #include<time.h>
 
 #define Max 100
-//	time_1t tt = time(NULL);
-//    struct tm* dt = localtime(&tt);
-
-//	struct tm *newtime;
-//    char am_pm[] = "AM";
-//    __time64_t long_time;
-
 
 
 //sructure
@@ -41,26 +33,9 @@ int somQuantite =0;
 
 Produit prodVendus[Max];
 
-//void dateTime()
-//{
-//
-//    _time64( &long_time );             // Get time as 64-bit integer.
-//                                       // Convert to local time.
-//    newtime = _localtime64( &long_time ); // C4996
-//    // Note: _localtime64 deprecated; consider _localetime64_s
-//
-//    if( newtime->tm_hour > 12 )        // Set up extension.
-//        strcpy_s( am_pm, sizeof(am_pm), "PM" );
-//    if( newtime->tm_hour > 12 )        // Convert from 24-hour
-//        newtime->tm_hour -= 12;        //   to 12-hour clock.
-//    if( newtime->tm_hour == 0 )        // Set hour to 12 if midnight.
-//        newtime->tm_hour = 12;
-//
-//    char buff[30];
-//    asctime_s( buff, sizeof(buff), newtime );
-//    printf( "%.19s %s\n", buff, am_pm );
-//}
+//fonctions
 void ajouterproduit(){
+	printf("\n *************************************\n");
     printf("\nentrer le code du produit :");
     scanf("%d",&produit[np].code);
     printf("entrer le nom du produit :");
@@ -73,6 +48,7 @@ void ajouterproduit(){
     printf("le prixTTC du produit : %.2f", produit[np].prixTTC);
     
     np++;
+    printf("\n *************************************\n");
 }
 void ajouterPlusieurProduit(){
     int i , nbr;
@@ -85,6 +61,9 @@ void ajouterPlusieurProduit(){
 void afficher(){
      int i; 
     for(i=0;i<np;i++){
+    	printf("\n ---------------------------- \n");
+    	printf("\n |*/*/*/*/|	Affichage	|*/*/*/*/| \n");
+    	printf("\n ---------------------------- \n");
         printf("nom = %s\t",produit[i].nom);
         printf("code = %d\t",produit[i].code);
         printf("quantite = %d\t",produit[i].quantite);
@@ -123,6 +102,7 @@ void prixdecroissant(){
    }
    afficher();
 }
+// recherche par code:
  void Frecherchecode(){
   	    int c,i;
         printf("\n-----------------------------------------\n");
@@ -135,9 +115,13 @@ void prixdecroissant(){
                        if(produit[i].code == c){
                     printf("code    nom      prix      quantite \n");
                     printf("%d      %s      %.2fdh        %d     \n",produit[i].code , produit[i].nom , produit[i].prix , produit[i].quantite);
-                    break ;             } 
+                    break ;
+					}
+					
                     }
+                   
     }
+// recherche par quantite:
   
 void Frecherchequantite(){
   	    int q,i;
@@ -166,7 +150,7 @@ void Fsupprimer()
 	       if(c ==produit[i].code )
 		   {
 	        printf("%d",i);
-	        position = i;//??
+	        position = i;
 	        for (i=position;i<np;i++){
 	           produit[i]=produit[i+1];
 	           np--;
@@ -209,7 +193,7 @@ void alimenterStock(){
   	
   	
   	
-    printf("entrer le code de produit : ");
+    printf("\nentrer le code de produit : ");
     scanf("%d", &code);
 
     printf("entrer la quantite de produit :");
@@ -225,8 +209,7 @@ void alimenterStock(){
 				printf(" %.2d/%.2d/%.2d\n",dt->tm_mday,dt->tm_mon+1,dt->tm_year+1900);
 			
 			produittotal = quantite*produit[i].prixTTC;
-			//printf("le produit total de prix est %.2f",produittotal);
-			//prodVendus[i].somPrixTotal += produittotal;
+		
 			
 			
 			prodVendus[sizeV] = produit[i];
@@ -251,7 +234,7 @@ void alimenterStock(){
             break;
         }
         else{
-            count++;//pour chercher si le code existe et refaire condition jusqua la derniere case du tableau 
+            count++;//code existe ou pas
         }
     }
     if(count==np){
@@ -273,7 +256,7 @@ void alimenterStock(){
     {
         if(prodVendus[i].d.day==jour&&prodVendus[i].d.month==mois&&prodVendus[i].d.year==annee)
         {
-            prixT += prodVendus[i].somPrixTotal ; // prixT = priT + prodVendus[i].somPrixTotal;
+            prixT += prodVendus[i].somPrixTotal ; 
         }
     }
 
@@ -298,73 +281,11 @@ void alimenterStock(){
             printf("Afficher le Min des prix des produits vendus en journee courante est = %.2f\n",min);
 	
 	
-//	if(max)
-//	max=;
-//	if(min)
-//	min=;
-	
-//  	printf("la somme de prix total est : %.2f",somPrixTotal);
-//  	printf("la somme des quantites est : %.2f",somPrixTotal/somQuantite);
+
   	
   	
   }     
   
-//void acheterProduit(){
-//    int i,code,quantite;
-//    
-//    time_t tt = time(NULL);
-//    struct tm* dt = localtime(&tt);
-//    
-//    int j ,m,an;
-//	printf("entre le code de produit : ");
-//	scanf("%d",&code);
-//
-//	
-//		for(i=0;i<np;i++){
-//		if(produit[i].code==code)
-//		{
-//			printf("entre la quantite de produit :");
-//			scanf("%d",&quantite);
-//			
-//			if(produit[i].quantite>=quantite)
-//			{
-//				produit[i].quantite -=quantite;
-//				printf("le nom de medicament %s  | PrixTTC = %d  | ",produit[i].nom);
-//				printf("\n%.2d/%.2d/%.2d\n",dt->tm_mday,dt->tm_mon+1,dt->tm_year+1900);
-//				break ;
-//			}
-//			else{
-//				printf("quantite insuffisant");
-//				break ;
-//			}
-//    	}else printf("produit introuvable");
-//    	d.day = dat->tm_mday;
-//    	d.month = dat->tm_mon+1;
-//    	d.year = dat->tm_year+1900;
-    	
-    	
-    //}
-
-
-// 	int c,q,i,somme;
-// 	printf("donner le code de produit que vous rechercher : ");
-//     scanf ("%d",&c);
-//      for(i=0;i<np;i++){
-//      	if(c ==produit[i].code ){
-//                  printf("%d",i);
-// 	if(q>produit[i].quantite){
-// 		printf("la quantite est superieure a la quantite stockee\n");
-// 	}else {
-// 		somme = q*produit[i].prixTTC;
-// 		printf("la somme de prix est %d",somme);
-// 	}
-	
-// }
-// }
-//}
-
-
-
 
 void menu(){
 	printf("\n**************************************\n");
@@ -421,7 +342,11 @@ int main(){
         goto debut;
         case 8: Fsupprimer();
         goto debut;
-        case 9: acheterProduit();
+        case 9: 
+        afficher();
+		acheterProduit();
+		afficher();
+        
         goto debut;
         case 10: alimenterStock();
         goto debut;
