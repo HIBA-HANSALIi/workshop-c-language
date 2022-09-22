@@ -3,8 +3,6 @@
 #include<string.h>
 #include<time.h>
 
-#define Max 100
-
 
 //sructure
 typedef struct Date 
@@ -18,7 +16,7 @@ typedef struct Produit{
     int quantite;
     float prix;
     float prixTTC;
-    //float somPrixTotal;
+    
     
     
 
@@ -37,17 +35,18 @@ typedef struct ProdVendus{
 }ProdVendus;
 
 
-Produit produit[Max];
+Produit produit[100];
 date d;
 int np=0;
-//float somPrixTotal =0;
+
 int somQuantite =0;
 
-ProdVendus prodVendus[Max];
+ProdVendus prodVendus[100];
 int sizeV=0;
 //fonctions
 void ajouterproduit(){
-	printf("\n *************************************\n");
+      	
+   	printf("\n *************************************\n");
     printf("\nentrer le code du produit :");
     scanf("%d",&produit[np].code);
     printf("entrer le nom du produit :");
@@ -120,16 +119,17 @@ void prixdecroissant(){
         printf("\n-----------------------------------------\n");
         printf(" -> 1 : chercher avec le code de produit :\n");
         printf("-----------------------------------------\n");
-             printf("recherche un produit ");
+             printf("recherche un produit\n ");
                       printf("donner le code de produit que vous rechercher ;");
                       scanf ("%d",&c);
                       for(i=0;i<np;i++){
                        if(produit[i].code == c){
+                       	
                     printf("code    nom      prix      quantite \n");
                     printf("%d      %s      %.2fdh        %d     \n",produit[i].code , produit[i].nom , produit[i].prix , produit[i].quantite);
                     break ;
 					}
-					
+		    	
                     }
                    
     }
@@ -140,7 +140,7 @@ void Frecherchequantite(){
         printf("\n-----------------------------------------\n");
         printf(" -> 2 : chercher avec le nom de produit  :\n");
         printf("-----------------------------------------\n");
-             printf("recherche un produit ");
+             printf("recherche un produit \n");
                       printf("donner la quantite de produit que vous rechercher ;");
                       scanf ("%d",&q);
                       for(i=0;i<np;i++){
@@ -170,19 +170,42 @@ void Fsupprimer()
 	     	}
 	     	}
 	   		}
+			  
     }
 void alimenterStock(){
-	int i,code,quantite;
+	int i,code,quantite,m=0;
 	printf("entre le code de produit :");
 	scanf("%d",&code);
+	
+		
+    
+for(i=0;i<np;i++){
+		
+		if(produit[i].code==code){
+		m=1;
+		
+		}
+		
+		         }
+  if(m==0){
+    	printf("ce code n'existe pas");
+	}else{
+		                   
 	printf("entre la quantite de produit :");
 	scanf("%d",&quantite);
+
 	for(i=0;i<np;i++){
+		
 		if(produit[i].code==code){
+			
 			produit[i].quantite += quantite;
 	}
-	break;
-    }
+
+//	break;
+  
+    
+	}
+	}
     }  
     void etat_stock(){
    	int i;
